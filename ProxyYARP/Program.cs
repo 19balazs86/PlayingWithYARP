@@ -6,10 +6,13 @@ public static class Program
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
         IServiceCollection services   = builder.Services;
+        IConfiguration configuration  = builder.Configuration;
 
         // Add services to the container
         {
             services.AddAuthorization();
+
+            services.AddReverseProxy().LoadFromConfig(configuration.GetSection("ReverseProxy"));
         }
 
         WebApplication app = builder.Build();
@@ -21,6 +24,8 @@ public static class Program
             app.UseAuthorization();
 
             app.MapGet("/", () => "Hello YARP!");
+
+            app.MapReverseProxy();
         }
 
         app.Run();
