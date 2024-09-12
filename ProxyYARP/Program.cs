@@ -1,3 +1,5 @@
+using ProxyYARP.Miscellaneous;
+
 namespace ProxyYARP;
 
 public static class Program
@@ -13,6 +15,13 @@ public static class Program
             services.AddAuthorization();
 
             services.AddReverseProxy().LoadFromConfig(configuration.GetSection("ReverseProxy"));
+
+            services.AddRateLimiter(options =>
+            {
+                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+                options.AddPolicy<string, RateLimiterPolicyByIPAddress>("SlidingWindowByIP");
+            });
         }
 
         WebApplication app = builder.Build();
@@ -23,7 +32,9 @@ public static class Program
 
             app.UseAuthorization();
 
-            app.MapGet("/", () => "Hello YARP!");
+            app.UseRateLimiter();
+
+            app.MapGet("/", () => "Hello YARP!").RequireRateLimiting("SlidingWindowByIP");
 
             app.MapReverseProxy();
         }
