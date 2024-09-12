@@ -1,4 +1,5 @@
 using ProxyYARP.Miscellaneous;
+using Yarp.ReverseProxy.Transforms;
 
 namespace ProxyYARP;
 
@@ -10,11 +11,21 @@ public static class Program
         IServiceCollection services   = builder.Services;
         IConfiguration configuration  = builder.Configuration;
 
+        string weatherApiKey = configuration["WeatherApiKey"] ?? string.Empty;
+
         // Add services to the container
         {
             services.AddAuthorization();
 
-            services.AddReverseProxy().LoadFromConfig(configuration.GetSection("ReverseProxy"));
+            services.AddReverseProxy()
+                .LoadFromConfig(configuration.GetSection("ReverseProxy"))
+                .AddTransforms(builderContext =>
+                {
+                    if (builderContext.Route.RouteId == "route-weather")
+                    {
+                        builderContext.AddQueryValue("key", weatherApiKey, append: false);
+                    }
+                });
 
             services.AddRateLimiter(options =>
             {
