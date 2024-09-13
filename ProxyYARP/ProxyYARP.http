@@ -3,4 +3,27 @@
 GET {{ProxyYARP_HostAddress}}/
 Accept: application/json
 
-###
+### JSON-Users
+
+GET {{ProxyYARP_HostAddress}}/json-placeholder/users
+Accept: application/json
+
+### JSON-Todos
+
+GET {{ProxyYARP_HostAddress}}/json-placeholder/todos
+Accept: application/json
+
+### Auth -> Login
+
+GET {{ProxyYARP_HostAddress}}/auth/login
+Accept: application/json
+
+### Auth -> Logout
+
+GET {{ProxyYARP_HostAddress}}/auth/logout
+Accept: application/json
+
+### Weather
+
+GET {{ProxyYARP_HostAddress}}/weather/London
+Accept: application/json

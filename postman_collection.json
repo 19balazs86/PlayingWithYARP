@@ -1,0 +1,143 @@
+{
+	"info": {
+		"_postman_id": "559e24c4-d5e4-4f87-9228-569fdafd5c7d",
+		"name": "YARP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8316451"
+	},
+	"item": [
+		{
+			"name": "Home",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HostAddress}}",
+					"host": [
+						"{{HostAddress}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "JSON-Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HostAddress}}/json-placeholder/users",
+					"host": [
+						"{{HostAddress}}"
+					],
+					"path": [
+						"json-placeholder",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "JSON-Todos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HostAddress}}/json-placeholder/todos",
+					"host": [
+						"{{HostAddress}}"
+					],
+					"path": [
+						"json-placeholder",
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HostAddress}}/auth/login",
+					"host": [
+						"{{HostAddress}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HostAddress}}/auth/logout",
+					"host": [
+						"{{HostAddress}}"
+					],
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Weather",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{HostAddress}}/weather/London",
+					"host": [
+						"{{HostAddress}}"
+					],
+					"path": [
+						"weather",
+						"London"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HostAddress",
+			"value": "https://localhost:7235",
+			"type": "string"
+		}
+	]
+}
