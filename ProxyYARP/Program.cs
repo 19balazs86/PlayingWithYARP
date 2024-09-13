@@ -35,7 +35,8 @@ public static class Program
             {
                 options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
-                options.AddPolicy<string, RateLimiterPolicyByIPAddress>("SlidingWindowByIP");
+                options.AddPolicy<string, RateLimiterPolicyByIPAddress>("RateLimiterByIP");
+                options.AddPolicy<string, RateLimiterPolicyByUser>("RateLimiterByUser");
             });
         }
 
@@ -43,14 +44,12 @@ public static class Program
 
         // Configure the HTTP request pipeline
         {
-            app.UseHttpsRedirection();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseRateLimiter();
 
-            app.MapGet("/", () => "Hello YARP!").RequireRateLimiting("SlidingWindowByIP");
+            app.MapGet("/", () => "Hello YARP!").RequireRateLimiting("RateLimiterByIP");
 
             app.MapReverseProxy();
 
@@ -69,7 +68,7 @@ public static class Program
             .AddCookie(options =>
             {
                 options.Cookie.Name = "auth-cookie";
-                options.Events.OnRedirectToLogin = context => preventRedirect(context, 401);
+                options.Events.OnRedirectToLogin = context => preventRedirect(context, StatusCodes.Status401Unauthorized);
             });
     }
 
