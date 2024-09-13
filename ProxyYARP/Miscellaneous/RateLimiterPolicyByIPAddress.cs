@@ -31,18 +31,14 @@ public sealed class RateLimiterPolicyByIPAddress : IRateLimiterPolicy<string>
     {
         IHeaderDictionary headers = httpContext.Request.Headers;
 
-        StringValues headerValues = headers["X-Real-IP"];
-
-        string? ipAddress = getIpAddressFromHeader(headerValues);
+        string? ipAddress = getIpAddressFromHeader(headers["X-Real-IP"]);
 
         if (!string.IsNullOrWhiteSpace(ipAddress))
         {
             return ipAddress;
         }
 
-        headerValues = headers["X-Forwarded-For"];
-
-        ipAddress = getIpAddressFromHeader(headerValues);
+        ipAddress = getIpAddressFromHeader(headers["X-Forwarded-For"]);
 
         if (!string.IsNullOrWhiteSpace(ipAddress))
         {

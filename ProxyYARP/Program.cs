@@ -62,19 +62,19 @@ public static class Program
     private static void addCookieAuth(this IServiceCollection services)
     {
         services.AddAuthorizationBuilder()
-                .AddPolicy("weather-auth-policy", builder => builder.RequireAuthenticatedUser());
+            .AddPolicy("weather-auth-policy", builder => builder.RequireAuthenticatedUser());
 
         services.AddAuthentication(AuthScheme)
             .AddCookie(options =>
             {
                 options.Cookie.Name = "auth-cookie";
-                options.Events.OnRedirectToLogin = context => preventRedirect(context, StatusCodes.Status401Unauthorized);
+                options.Events.OnRedirectToLogin = preventRedirect;
             });
     }
 
-    private static Task preventRedirect(RedirectContext<CookieAuthenticationOptions> context, int statusCode)
+    private static Task preventRedirect(RedirectContext<CookieAuthenticationOptions> context)
     {
-        context.Response.StatusCode = statusCode;
+        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
 
         return Task.CompletedTask;
     }
