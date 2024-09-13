@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using ProxyYARP.Miscellaneous;
 using Yarp.ReverseProxy.Transforms;
 
@@ -5,6 +7,8 @@ namespace ProxyYARP;
 
 public static class Program
 {
+    public const string AuthScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -15,7 +19,7 @@ public static class Program
 
         // Add services to the container
         {
-            services.AddAuthorization();
+            services.addCookieAuth();
 
             services.AddReverseProxy()
                 .LoadFromConfig(configuration.GetSection("ReverseProxy"))
@@ -41,6 +45,7 @@ public static class Program
         {
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseRateLimiter();
@@ -48,8 +53,30 @@ public static class Program
             app.MapGet("/", () => "Hello YARP!").RequireRateLimiting("SlidingWindowByIP");
 
             app.MapReverseProxy();
+
+            app.MapAuthEndpoints();
         }
 
         app.Run();
+    }
+
+    private static void addCookieAuth(this IServiceCollection services)
+    {
+        services.AddAuthorizationBuilder()
+                .AddPolicy("weather-auth-policy", builder => builder.RequireAuthenticatedUser());
+
+        services.AddAuthentication(AuthScheme)
+            .AddCookie(options =>
+            {
+                options.Cookie.Name = "auth-cookie";
+                options.Events.OnRedirectToLogin = context => preventRedirect(context, 401);
+            });
+    }
+
+    private static Task preventRedirect(RedirectContext<CookieAuthenticationOptions> context, int statusCode)
+    {
+        context.Response.StatusCode = statusCode;
+
+        return Task.CompletedTask;
     }
 }
