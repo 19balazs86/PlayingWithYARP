@@ -16,3 +16,5 @@ In this repository, I experiment with the YARP reverse proxy
   - [Rate limiting](https://youtu.be/1tPVVDEDGtE) 📽️*10 min – Milan*
   - [IP Address rate limiter](https://youtu.be/PIfGHbvuAtM) 📽️*8 min – Milan*
   - [Get the remote host IP Address](https://code-maze.com/aspnetcore-how-to-get-the-remote-host-ip-address) 📓*Code-Maze*
+- Miscellaneous
+  - [Forwarding access token to Downstream APIs](https://dev.to/leandroveiga/securing-apis-with-yarp-authentication-and-authorization-in-net-8-minimal-apis-2960) 📓*DEV.to - Leandro Veiga*
