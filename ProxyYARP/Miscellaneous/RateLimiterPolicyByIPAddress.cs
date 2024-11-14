@@ -14,16 +14,13 @@ public sealed class RateLimiterPolicyByIPAddress : IRateLimiterPolicy<string>
     {
         string ipAddress = getRemoteIpAddress(httpContext);
 
-        return RateLimitPartition.GetSlidingWindowLimiter(partitionKey: ipAddress, partKey =>
+        return RateLimitPartition.GetSlidingWindowLimiter(partitionKey: ipAddress, partKey => new SlidingWindowRateLimiterOptions
         {
-            return new SlidingWindowRateLimiterOptions
-            {
-                PermitLimit          = 3,
-                Window               = TimeSpan.FromSeconds(5),
-                SegmentsPerWindow    = 2,
-                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                QueueLimit           = 5
-            };
+            PermitLimit          = 3,
+            Window               = TimeSpan.FromSeconds(5),
+            SegmentsPerWindow    = 2,
+            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+            QueueLimit           = 5
         });
     }
 
@@ -57,18 +54,9 @@ public sealed class RateLimiterPolicyByIPAddress : IRateLimiterPolicy<string>
                 continue;
             }
 
-            var ranges = new Span<Range>();
-
-            int splitCount = headerValue.Split(ranges, ',', StringSplitOptions.RemoveEmptyEntries);
-
-            if (splitCount == 0)
+            foreach (Range range in headerValue.Split(','))
             {
-                return parseIPAddress(headerValue);
-            }
-
-            foreach (Range range in ranges)
-            {
-                string? ipAddress = parseIPAddress(headerValue[range]);
+                string? ipAddress = parseIpAddress(headerValue[range]);
 
                 if (ipAddress is not null)
                 {
@@ -80,7 +68,7 @@ public sealed class RateLimiterPolicyByIPAddress : IRateLimiterPolicy<string>
         return null;
     }
 
-    private static string? parseIPAddress(ReadOnlySpan<char> ipValue)
+    private static string? parseIpAddress(ReadOnlySpan<char> ipValue)
     {
         ReadOnlySpan<char> trimmedIp = ipValue.Trim();
 
