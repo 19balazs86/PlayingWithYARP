@@ -10,7 +10,7 @@ In this repository, I experiment with the YARP reverse proxy
 - [Authentication](https://www.milanjovanovic.tech/blog/implementing-api-gateway-authentication-with-yarp) 📓*Milan's newsletter*
 - [Authentication](https://youtu.be/gk1uQrWDMjk) 📽️*14 min - Milan*
 - [Load Balancer](https://youtu.be/0RaH9hhOF4g) 📽️*11 min – Milan*
-- [Service Discovery on reverse proxy](https://youtu.be/zn8N6G1bSSI) 📽️*40 sec – Milan*
+- [Configuring Service Discovery](https://youtu.be/dycTcAbjz9s) *(Manually, .NET Aspire)*📽️*17 min – Milan*
 - Rate limiting
   - [Rate limiting middleware](https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit) 📚
   - [Rate limiting](https://www.milanjovanovic.tech/blog/advanced-rate-limiting-use-cases-in-dotnet) 📓*Milan's newsletter*
